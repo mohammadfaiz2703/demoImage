@@ -13,7 +13,7 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 // MongoDB connection
 mongoose
-  .connect("mongodb+srv://faiz:faizjarvis@cluster1.lmtoo7r.mongodb.net/DemoImage?retryWrites=true&w=majority&appName=Cluster1", {
+  .connect(WhatAreYouReadingNooby&appName=Cluster1", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
