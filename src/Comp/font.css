@@ -1,0 +1,43 @@
+.image-upload-container {
+  width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+.image-upload-container h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.file-input-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #4b6bfb;
+  color: white;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.file-input-label:hover {
+  background: #3a59d9;
+}
+
+.file-input-label input {
+  display: none; /* hide default input */
+}
+
+.preview-image {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+}
