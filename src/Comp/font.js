@@ -1,32 +1,52 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authcontext";
 
 export default function UploadImage() {
   const { isLogin } = useAuth();
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
-    if(!localStorage.getItem("token"))
-    {
-      navigate('/login')
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
     }
   }, [isLogin, navigate]);
 
-  const uploadImage=async()=>{
-    const send=await fetch(`http://localhost:5000/api/upload`,{
-      method:"post",
-      headers:{
-        "content-type":'application/json',
-"authentication":`Bearer ${localStorage.getItem('token')}`
+  const uploadImage = async () => {
+    if (!file) {
+      alert("Please select an image");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file); // 🔑 field name must match backend
+
+    try {
+      const res = await fetch("http://localhost:5000/api/upload", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Image uploaded successfully");
+      } else {
+        alert(data.message || "Upload failed");
       }
-    })
-  }
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-sm bg-white p-6 rounded-xl shadow-sm flex flex-col gap-5">
-        
         <h2 className="text-xl font-semibold text-center">
           Upload Image
         </h2>
@@ -34,6 +54,7 @@ export default function UploadImage() {
         <input
           type="file"
           accept="image/*"
+          onChange={(e) => setFile(e.target.files[0])}
           className="
             block w-full text-sm text-gray-600
             file:mr-4 file:py-2 file:px-4
@@ -46,13 +67,13 @@ export default function UploadImage() {
         />
 
         <button
+          onClick={uploadImage}
           className="
             w-full py-2 rounded-lg
             bg-black text-white
             hover:bg-gray-900
             transition
           "
-          onClick={()=>{uploadImage()}}
         >
           Upload
         </button>
@@ -60,13 +81,3 @@ export default function UploadImage() {
     </div>
   );
 }
-
-
-// what to do tomorrow
-/* 
-1. add image upload api
-2. add logout
-3. make a password store app just for you
-
-
-*/
