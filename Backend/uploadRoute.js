@@ -1,11 +1,11 @@
-// uploadRoute.js
 const express = require("express");
 const upload = require("./multerConfig");
 const Image = require("./model/Image");
+// const protect = require("./middleware/authMiddleware");
 
 const router = express.Router();
 
-// POST: Upload image, store in DB
+// Upload image
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     if (!req.file) {
@@ -20,31 +20,25 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     await newImage.save();
 
-    res.json({
-      success: true,
-      message: "Image uploaded successfully",
-      data: newImage
-    });
-
+    res.json({ success: true });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Server error" });
   }
 });
 
+// Fetch all images (IDs only)
 router.get("/fetchall", async (req, res) => {
   try {
-    const images = await Image.find().sort({ createdAt: -1 });
+    const images = await Image
+      .find()
+      .select("+image") // 👈 FORCE include
+      .sort({ createdAt: -1 });
+
     res.json(images);
   } catch (err) {
-    console.error(err);
     res.status(500).send("Server Error");
   }
-});
-
-// Test route
-router.get("/", (req, res) => {
-  res.json({ message: "Never Give Up" });
 });
 
 module.exports = router;

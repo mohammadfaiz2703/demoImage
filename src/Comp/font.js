@@ -30,7 +30,7 @@ export default function UploadImage() {
         },
         body: formData,
       });
-
+     
       const data = await res.json();
 
       if (res.ok) {

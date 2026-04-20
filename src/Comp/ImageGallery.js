@@ -1,82 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../authcontext";
 
-export default function UploadImage() {
-  const { isLogin } = useAuth();
-  const navigate = useNavigate();
-  const [file, setFile] = useState(null);
+export default function ImageGallery() {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/login");
-    }
-  }, [isLogin, navigate]);
-
-  const uploadImage = async () => {
-    if (!file) {
-      alert("Please select an image");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("image", file); // 🔑 field name must match backend
-
-    try {
-      const res = await fetch("http://localhost:5000/api/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("Image uploaded successfully");
-      } else {
-        alert(data.message || "Upload failed");
+  fetch("http://localhost:5000/api/upload/fetchall")
+    .then(res => res.json())
+    .then(data => {
+      console.log(data); // 👈 LOOK HERE
+      setImages(data);
+    });
+}, []);
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/upload/fetchall");
+        const data = await res.json();
+        setImages(data);
+      } catch (err) {
+        console.error("Failed to fetch images", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      alert("Server error");
-    }
-  };
+    };
+
+    fetchImages();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center mt-10">Loading images...</p>;
+  }
+// console.log(images)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-sm bg-white p-6 rounded-xl shadow-sm flex flex-col gap-5">
-        <h2 className="text-xl font-semibold text-center">
-          Upload Image
-        </h2>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h2 className="text-2xl font-semibold mb-6 text-center">
+        Image Gallery
+      </h2>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
-          className="
-            block w-full text-sm text-gray-600
-            file:mr-4 file:py-2 file:px-4
-            file:rounded-lg file:border-0
-            file:text-sm file:font-medium
-            file:bg-gray-100 file:text-gray-700
-            hover:file:bg-gray-200
-            cursor-pointer
-          "
-        />
-
-        <button
-          onClick={uploadImage}
-          className="
-            w-full py-2 rounded-lg
-            bg-black text-white
-            hover:bg-gray-900
-            transition
-          "
-        >
-          Upload
-        </button>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {images.map((img) => (
+          <div
+            key={img._id}
+            className="bg-white rounded-lg shadow-sm p-2"
+          >
+            <img
+              src={`data:image/jpeg;base64,${img.image}`}
+              alt="uploaded"
+              className="w-full h-40 object-cover rounded-md"
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
