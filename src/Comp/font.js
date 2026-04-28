@@ -7,6 +7,11 @@ export default function UploadImage() {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
 
+  const handleLogout=()=>{
+  localStorage.removeItem('token');
+  navigate('login');
+  
+}
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
@@ -46,6 +51,10 @@ export default function UploadImage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
+
+      <button onClick={handleLogout} className="logout-btn">
+        Logout
+      </button>
       <div className="w-full max-w-sm bg-white p-6 rounded-xl shadow-sm flex flex-col gap-5">
         <h2 className="text-xl font-semibold text-center">
           Upload Image
