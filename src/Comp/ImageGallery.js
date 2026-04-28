@@ -15,7 +15,7 @@ export default function ImageGallery() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/upload/fetchall");
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/upload/fetchall`);
         const data = await res.json();
         setImages(data);
       } catch (err) {

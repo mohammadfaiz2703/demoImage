@@ -1,5 +1,4 @@
-// index.js
-require("dotenv").config(); // 🔑 MUST be at top
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -9,13 +8,22 @@ const uploadRoute = require("./uploadRoute");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://demoimage-1.onrender.com"
+    ],
+    credentials: true
+  })
+);
+
 app.use(express.json());
 
-// Static folder to serve images
+// Serve images
 app.use("/uploads", express.static("uploads"));
 
-// MongoDB connection
+// MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
@@ -27,4 +35,6 @@ app.use("/api/auth", auth);
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server running on port ${PORT}`)
+);

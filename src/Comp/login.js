@@ -24,7 +24,7 @@ const navigate=useNavigate();
     e.preventDefault(); // ❗ stop page refresh
     
 const {email,password}=userData;
-const req=await fetch('http://localhost:5000/api/auth/login',{
+const req=await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`,{
   method:'POST',
   headers:{
     "Content-type":'application/json'
