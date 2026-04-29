@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../authcontext";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 export default function Signup() {
   const [userData, setUserData] = useState({
     username: "",
@@ -97,9 +97,9 @@ toggleAuth();
 
         <p className="text-center mt-4 text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600">
+          <Link to="/login" className="text-blue-600">
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>

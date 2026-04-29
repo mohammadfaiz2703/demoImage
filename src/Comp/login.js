@@ -1,7 +1,7 @@
 import { useDebugValue, useEffect, useState } from "react";
 import { useAuth } from "../authcontext";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 export default function Login() {
   const {toggleAuth,isLogin}=useAuth();
   const [userData, setUserData] = useState({
@@ -86,9 +86,9 @@ console.log(res);
 
         <p className="text-center mt-4 text-gray-600">
           Don’t have an account?{" "}
-          <a href="/signup" className="text-blue-600">
+          <Link to="/signup" className="text-blue-600">
             Sign Up
-          </a>
+          </Link>
         </p>
       </div>
     </div>
