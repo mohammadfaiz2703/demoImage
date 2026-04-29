@@ -12,7 +12,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://demoimage-1.onrender.com"
+    "https://justdemo-uacg.onrender.com"
     ],
     credentials: true
   })
