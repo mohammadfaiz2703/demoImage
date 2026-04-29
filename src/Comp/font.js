@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../authcontext";
 
 export default function UploadImage() {
@@ -55,6 +55,9 @@ export default function UploadImage() {
       <button onClick={handleLogout} className="logout-btn">
         Logout
       </button>
+      <Link to='/imageShowplease' className="logout-btn">
+        ShowImage
+      </Link>
       <div className="w-full max-w-sm bg-white p-6 rounded-xl shadow-sm flex flex-col gap-5">
         <h2 className="text-xl font-semibold text-center">
           Upload Image
